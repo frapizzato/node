@@ -71,7 +71,13 @@ create_kind_clusters() {
                 # Set the role of the cluster
                 role="consumer"
                 # Create the cluster
-                kind create cluster --name "$name" --config "$SCRIPT_DIR"/../../quickstart/kind/configs/standard.yaml --kubeconfig "$SCRIPT_DIR"/"$name"-config -q
+                if [ "$7" == "true" ]; then
+                    echo "creating cluster with calico"
+                    kind create cluster --name "$name" --config "$SCRIPT_DIR"/../../quickstart/kind/configs/calico.yaml --kubeconfig "$SCRIPT_DIR"/"$name"-config -q
+                else
+                    echo "creating cluster without calico"
+                    kind create cluster --name "$name" --config "$SCRIPT_DIR"/../../quickstart/kind/configs/standard.yaml --kubeconfig "$SCRIPT_DIR"/"$name"-config -q
+                fi
                 # Install macvlan plugin to enable multicast node discovery, if required
                 if [ "$6" == "true" ]; then
                     num_workers=$(kind get nodes --name fluidos-consumer-1 | grep worker -c)
@@ -84,6 +90,22 @@ create_kind_clusters() {
                             docker exec --workdir /tmp "$name"-worker"$([ "$j" = 1 ] && echo "" || echo "$j")" rm -r cni-plugins
                         )
                     done
+                fi
+                # Install Calico CNI
+                echo "Calico CNI: $7"
+                if [ "$7" == "true" ]; then
+                    export KUBECONFIG="$SCRIPT_DIR"/"$name"-config
+                    print_title "Installing Calico CNI for $name (kubeconfig $KUBECONFIG)..."
+                    kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.2/manifests/tigera-operator.yaml
+                    if [ $? -ne 0 ]; then
+                        echo "Failed to install Tigera Operator for Calico. Exiting..."
+                        exit 1
+                    fi
+                    kubectl create -f "$SCRIPT_DIR"/../../quickstart/utils/calico-custom-resources.yaml
+                    if [ $? -ne 0 ]; then
+                        echo "Failed to apply custom resources for Calico. Exiting..."
+                        exit 1
+                    fi
                 fi
                 # Get the IP of the control plane of the cluster
                 controlplane_ip=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$name"-control-plane)                
