@@ -98,7 +98,7 @@ else
 fi
 
 # Ask the user if they want to use Calico CNI for supporint protected borders functionality
-read -r -p "Do you want to enable Calico CNI? [y/n] " enable_calico_cni
+read -r -p "Do you want to use Calico CNI? [y/n] " enable_calico_cni
 
 # Check if the input is y or n
 if [ "$enable_calico_cni" == "y" ]; then
