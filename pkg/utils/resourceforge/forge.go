@@ -751,25 +751,31 @@ func ForgeResourceSelectorFromObj(resourceSelector *models.ResourceSelector) *no
 			return nil
 		}
 		// Create PodNamespaceSelector nodecorev1alpha1
+		/*
+			podNamespaceSelectorCR := nodecorev1alpha1.PodNamespaceSelector{
+				// Copy map of models.PodNamespaceSelector.Pod to nodecorev1alpha1.PodNamespaceSelector.Pod
+				Pod: func() map[string]string {
+					podMap := make(map[string]string)
+					for i := range resourceSelectorStruct.Pod {
+						keyValuePair := resourceSelectorStruct.Pod[i]
+						podMap[keyValuePair.Key] = keyValuePair.Value
+					}
+					return podMap
+				}(),
+				// Copy map of models.PodNamespaceSelector.Namespace to nodecorev1alpha1.PodNamespaceSelector.Namespace
+				Namespace: func() map[string]string {
+					namespaceMap := make(map[string]string)
+					for i := range resourceSelectorStruct.Namespace {
+						keyValuePair := resourceSelectorStruct.Namespace[i]
+						namespaceMap[keyValuePair.Key] = keyValuePair.Value
+					}
+					return namespaceMap
+				}(),
+			}
+		*/
 		podNamespaceSelectorCR := nodecorev1alpha1.PodNamespaceSelector{
-			// Copy map of models.PodNamespaceSelector.Pod to nodecorev1alpha1.PodNamespaceSelector.Pod
-			Pod: func() map[string]string {
-				podMap := make(map[string]string)
-				for i := range resourceSelectorStruct.Pod {
-					keyValuePair := resourceSelectorStruct.Pod[i]
-					podMap[keyValuePair.Key] = keyValuePair.Value
-				}
-				return podMap
-			}(),
-			// Copy map of models.PodNamespaceSelector.Namespace to nodecorev1alpha1.PodNamespaceSelector.Namespace
-			Namespace: func() map[string]string {
-				namespaceMap := make(map[string]string)
-				for i := range resourceSelectorStruct.Namespace {
-					keyValuePair := resourceSelectorStruct.Namespace[i]
-					namespaceMap[keyValuePair.Key] = keyValuePair.Value
-				}
-				return namespaceMap
-			}(),
+			Pod:       resourceSelectorStruct.Pod,
+			Namespace: resourceSelectorStruct.Namespace,
 		}
 		// Marshal PodNamespaceSelector to JSON
 		resourceSelectorData, err := json.Marshal(podNamespaceSelectorCR)
