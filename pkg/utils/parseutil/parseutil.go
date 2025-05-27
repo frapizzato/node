@@ -489,7 +489,7 @@ func ParseSourceDestination(sourceDestination nodecorev1alpha1.SourceDestination
 			return nil, err
 		}
 		resourceSelector = models.ResourceSelector{
-			TypeIdentifier: models.CIDRSelectorType,
+			TypeIdentifier: models.PodNamespaceSelectorType,
 			Selector:       podNamespaceSelectorData,
 		}
 	default:

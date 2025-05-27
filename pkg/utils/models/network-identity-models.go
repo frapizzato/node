@@ -58,11 +58,6 @@ type CIDRSelector string
 
 // PodNamespaceSelector represents the pod namespace selector of a SourceDestination.
 type PodNamespaceSelector struct {
-	Pod       []keyValuePair `json:"pod"`
-	Namespace []keyValuePair `json:"namespace"`
-}
-
-type keyValuePair struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+	Pod       map[string]string `json:"pod"`
+	Namespace map[string]string `json:"namespace"`
 }
