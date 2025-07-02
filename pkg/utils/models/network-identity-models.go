@@ -43,7 +43,7 @@ type NetworkAuthorizations struct {
 
 // SourceDestination represents the source or destination of a network intent.
 type SourceDestination struct {
-	IsHotCluster     bool             `json:"isHotCluster"`
+	IsHostCluster    bool             `json:"isHostCluster"`
 	ResourceSelector ResourceSelector `json:"resourceSelectors"`
 }
 

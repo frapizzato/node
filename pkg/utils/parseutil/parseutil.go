@@ -496,7 +496,7 @@ func ParseSourceDestination(sourceDestination nodecorev1alpha1.SourceDestination
 		return nil, fmt.Errorf("unknown resource selector type")
 	}
 	sourceDestinationModel := models.SourceDestination{
-		IsHotCluster:     sourceDestination.IsHotCluster,
+		IsHostCluster:    sourceDestination.IsHostCluster,
 		ResourceSelector: resourceSelector,
 	}
 

@@ -52,8 +52,8 @@ type ResourceSelector struct {
 
 // SourceDestination can represent either the source or destination of a network intent.
 type SourceDestination struct {
-	// IsHotCluster is true if the source/destination is a hot cluster.
-	IsHotCluster bool `json:"isHotCluster"`
+	// IsHostCluster is true if the source/destination is a hot cluster.
+	IsHostCluster bool `json:"isHostCluster"`
 	// ResourceSelector is the resource selector of the source/destination.
 	ResourceSelector ResourceSelector `json:"resourceSelector"`
 }

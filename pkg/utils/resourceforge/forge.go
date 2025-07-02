@@ -794,7 +794,7 @@ func ForgeSourceDestinationFromObj(sourceDestination *models.SourceDestination) 
 		return nil
 	}
 	return &nodecorev1alpha1.SourceDestination{
-		IsHotCluster:     sourceDestination.IsHotCluster,
+		IsHostCluster:    sourceDestination.IsHostCluster,
 		ResourceSelector: *resourceSelector,
 	}
 }
